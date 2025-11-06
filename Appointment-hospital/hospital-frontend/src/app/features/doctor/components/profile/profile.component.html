@@ -1,0 +1,73 @@
+<div class="profile-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Doctor Profile</mat-card-title>
+      <button mat-icon-button (click)="toggleEdit()">
+        <mat-icon>{{ isEditing ? 'close' : 'edit' }}</mat-icon>
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" [readonly]="!isEditing" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" [readonly]="!isEditing" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" [readonly]="!isEditing" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone" [readonly]="!isEditing" />
+            <mat-error *ngIf="profileForm.get('phone')?.hasError('pattern')">
+              Please enter a valid 10-digit phone number
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Specialization</mat-label>
+            <input matInput formControlName="specialization" [readonly]="!isEditing" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Experience (years)</mat-label>
+            <input matInput type="number" formControlName="experience" [readonly]="!isEditing" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Qualification</mat-label>
+            <input matInput formControlName="qualification" [readonly]="!isEditing" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Bio</mat-label>
+            <textarea matInput rows="3" formControlName="bio" [readonly]="!isEditing"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="actions" *ngIf="isEditing">
+          <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid">
+            Save Changes
+          </button>
+          <button mat-button type="button" (click)="toggleEdit()">Cancel</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

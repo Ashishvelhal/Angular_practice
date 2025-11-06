@@ -1,0 +1,13 @@
+<div class="admin-dashboard">
+  <h2>Admin Dashboard</h2>
+  <div class="stats">
+    <div>Total Users: {{ stats.totalUsers }}</div>
+    <div>Active Doctors: {{ stats.activeDoctors }}</div>
+    <div>Appointments Today: {{ stats.appointmentsToday }}</div>
+    <div>Revenue: {{ stats.revenue | currency }}</div>
+  </div>
+  <h3>Recent Activities</h3>
+  <ul>
+    <li *ngFor="let a of recentActivities">{{ a.action }} - {{ a.time }}</li>
+  </ul>
+</div>

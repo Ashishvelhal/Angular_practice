@@ -1,0 +1,83 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h2>My Profile</h2>
+    <button mat-raised-button color="primary" (click)="toggleEdit()">
+      {{ isEditing ? 'Cancel' : 'Edit Profile' }}
+    </button>
+  </div>
+
+  <div class="profile-content">
+    <div class="profile-avatar">
+      <div class="avatar">
+        {{ userProfile.firstName.charAt(0) }}{{ userProfile.lastName.charAt(0) }}
+      </div>
+      <h3>{{ userProfile.firstName }} {{ userProfile.lastName }}</h3>
+      <p class="email">{{ userProfile.email }}</p>
+    </div>
+
+    <div class="profile-details">
+      <div class="detail-item">
+        <span class="label">First Name:</span>
+        <span *ngIf="!isEditing" class="value">{{ userProfile.firstName }}</span>
+        <mat-form-field *ngIf="isEditing" class="edit-field">
+          <input matInput [(ngModel)]="userProfile.firstName" placeholder="First Name">
+        </mat-form-field>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Last Name:</span>
+        <span *ngIf="!isEditing" class="value">{{ userProfile.lastName }}</span>
+        <mat-form-field *ngIf="isEditing" class="edit-field">
+          <input matInput [(ngModel)]="userProfile.lastName" placeholder="Last Name">
+        </mat-form-field>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Email:</span>
+        <span class="value">{{ userProfile.email }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Phone:</span>
+        <span *ngIf="!isEditing" class="value">{{ userProfile.phone }}</span>
+        <mat-form-field *ngIf="isEditing" class="edit-field">
+          <input matInput [(ngModel)]="userProfile.phone" placeholder="Phone">
+        </mat-form-field>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Date of Birth:</span>
+        <span *ngIf="!isEditing" class="value">{{ userProfile.dateOfBirth | date }}</span>
+        <mat-form-field *ngIf="isEditing" class="edit-field">
+          <input matInput [matDatepicker]="picker" [(ngModel)]="userProfile.dateOfBirth" placeholder="Date of Birth">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Blood Type:</span>
+        <span *ngIf="!isEditing" class="value">{{ userProfile.bloodType }}</span>
+        <mat-form-field *ngIf="isEditing" class="edit-field">
+          <mat-select [(ngModel)]="userProfile.bloodType" placeholder="Blood Type">
+            <mat-option *ngFor="let type of ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Address:</span>
+        <span *ngIf="!isEditing" class="value">{{ userProfile.address }}</span>
+        <mat-form-field *ngIf="isEditing" class="edit-field">
+          <textarea matInput [(ngModel)]="userProfile.address" placeholder="Address" rows="2"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="isEditing" class="action-buttons">
+        <button mat-raised-button color="primary" (click)="saveProfile()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
