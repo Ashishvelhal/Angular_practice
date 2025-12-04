@@ -1,59 +1,124 @@
-<h2 mat-dialog-title>Book an Appointment</h2>
-<mat-dialog-content>
-  <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Select Doctor</mat-label>
-      <mat-select formControlName="doctor" (selectionChange)="onDoctorSelect($event)">
-        <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">
-          {{doctor.name}} - {{doctor.specialization}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="appointmentForm.get('doctor')?.hasError('required')">
-        Please select a doctor
-      </mat-error>
-    </mat-form-field>
+<div class="book-appointment-container">
+  <mat-card class="appointment-card">
+    <mat-card-header class="appointment-header">
+      <mat-card-title>Book an Appointment</mat-card-title>
+      <mat-card-subtitle>Schedule your medical consultation</mat-card-subtitle>
+    </mat-card-header>
 
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Choose a date</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="appointmentForm.get('date')?.hasError('required')">
-        Please select a date
-      </mat-error>
-    </mat-form-field>
+    <mat-card-content>
+      <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()" class="appointment-form">
+        <!-- Doctor Selection -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Select Doctor</mat-label>
+          <mat-select formControlName="doctor" (selectionChange)="onDoctorSelect($event)">
+            <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">
+              <div class="doctor-option">
+                <div class="doctor-info">
+                  <span class="doctor-name">{{doctor.name}}</span>
+                  <span class="doctor-specialization">{{doctor.specialization}}</span>
+                </div>
+                <span class="doctor-fee">${{doctor.consultationFee}}</span>
+              </div>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="appointmentForm.get('doctor')?.hasError('required')">
+            Please select a doctor
+          </mat-error>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Select Time Slot</mat-label>
-      <mat-select formControlName="time">
-        <mat-option *ngFor="let slot of doctors[0]?.availableSlots" [value]="slot">
-          {{slot}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="appointmentForm.get('time')?.hasError('required')">
-        Please select a time slot
-      </mat-error>
-    </mat-form-field>
+        <!-- Date Selection -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date" [min]="todayDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="appointmentForm.get('date')?.hasError('required')">
+            Please select a date
+          </mat-error>
+          <mat-error *ngIf="appointmentForm.get('date')?.hasError('matDatepickerMin')">
+            Cannot select past dates
+          </mat-error>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Reason for visit</mat-label>
-      <textarea matInput formControlName="reason" rows="3"></textarea>
-      <mat-error *ngIf="appointmentForm.get('reason')?.hasError('required')">
-        Please provide a reason for your visit
-      </mat-error>
-      <mat-error *ngIf="appointmentForm.get('reason')?.hasError('minlength')">
-        Reason should be at least 10 characters long
-      </mat-error>
-    </mat-form-field>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-raised-button 
-          color="primary" 
-          [disabled]="!appointmentForm.valid || loading"
-          (click)="onSubmit()">
-    <span *ngIf="!loading">Book Appointment</span>
-    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-  </button>
-</mat-dialog-actions>
+        <!-- Time Slot Selection -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Select Time Slot</mat-label>
+          <mat-select formControlName="time">
+            <mat-option *ngFor="let slot of availableTimeSlots" [value]="slot">
+              {{slot}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="appointmentForm.get('time')?.hasError('required')">
+            Please select a time slot
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Appointment Type -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Appointment Type</mat-label>
+          <mat-select formControlName="appointmentType">
+            <mat-option value="consultation">General Consultation</mat-option>
+            <mat-option value="followup">Follow-up Visit</mat-option>
+            <mat-option value="emergency">Emergency</mat-option>
+            <mat-option value="checkup">Routine Checkup</mat-option>
+          </mat-select>
+          <mat-error *ngIf="appointmentForm.get('appointmentType')?.hasError('required')">
+            Please select appointment type
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Reason for Visit -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Reason for visit</mat-label>
+          <textarea matInput 
+                    formControlName="reason" 
+                    rows="4" 
+                    placeholder="Describe your symptoms or reason for consultation..."></textarea>
+          <mat-error *ngIf="appointmentForm.get('reason')?.hasError('required')">
+            Please provide a reason for your visit
+          </mat-error>
+          <mat-error *ngIf="appointmentForm.get('reason')?.hasError('minlength')">
+            Reason should be at least 10 characters long
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Additional Notes -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Additional Notes (Optional)</mat-label>
+          <textarea matInput 
+                    formControlName="notes" 
+                    rows="3" 
+                    placeholder="Any additional information you'd like to share..."></textarea>
+        </mat-form-field>
+
+        <!-- Preferred Contact Method -->
+        <div class="contact-method">
+          <label class="field-label">Preferred Contact Method</label>
+          <mat-radio-group formControlName="contactMethod" class="radio-group">
+            <mat-radio-button value="phone">Phone Call</mat-radio-button>
+            <mat-radio-button value="email">Email</mat-radio-button>
+            <mat-radio-button value="sms">SMS</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <button mat-button 
+                  type="button" 
+                  class="cancel-btn"
+                  routerLink="/patient/dashboard">
+            Cancel
+          </button>
+          <button mat-raised-button 
+                  color="primary" 
+                  type="submit" 
+                  class="submit-btn"
+                  [disabled]="!appointmentForm.valid || isLoading">
+            <span *ngIf="!isLoading">Book Appointment</span>
+            <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

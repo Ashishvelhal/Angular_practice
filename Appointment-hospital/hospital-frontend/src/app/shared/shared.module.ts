@@ -26,6 +26,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatRadioModule } from '@angular/material/radio';
 
 // Components
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -55,7 +56,8 @@ const materialModules = [
   MatSortModule,
   MatDividerModule,
   MatTooltipModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatRadioModule
 ];
 
 @NgModule({

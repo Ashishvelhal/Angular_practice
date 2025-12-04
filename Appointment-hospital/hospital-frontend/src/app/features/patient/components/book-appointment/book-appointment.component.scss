@@ -1,4 +1,248 @@
-/* ensures loader returns a string */
-:host { display: block; }
-.form-row { display: flex; gap: 16px; margin-bottom: 16px; }
-.w-100 { width: 100%; }
+.book-appointment-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fbff 0%, #e8f4f8 50%, #f0f9ff 100%);
+  padding: 20px;
+  overflow-y: auto;
+
+  .appointment-card {
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    margin-bottom: 40px;
+  }
+
+  .appointment-header {
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    color: #1e293b;
+    padding: 40px 32px 32px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+
+    mat-card-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #0f172a;
+      letter-spacing: -0.025em;
+    }
+
+    mat-card-subtitle {
+      color: #64748b;
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+  }
+
+  .appointment-form {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 32px;
+
+    .form-field {
+      width: 100%;
+      margin-bottom: 24px;
+
+      ::ng-deep .mat-form-field-wrapper {
+        margin-bottom: 0;
+        padding-bottom: 1.25em;
+      }
+
+      ::ng-deep .mat-form-field-outline {
+        border-color: #e2e8f0;
+        border-width: 1.5px;
+      }
+
+      ::ng-deep .mat-form-field-outline-thick {
+        border-color: #3b82f6;
+        border-width: 2px;
+      }
+
+      ::ng-deep .mat-form-field-label {
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      ::ng-deep .mat-input-element {
+        color: #1e293b;
+        font-size: 15px;
+      }
+
+      ::ng-deep .mat-focused .mat-form-field-label {
+        color: #3b82f6;
+      }
+
+      ::ng-deep .mat-icon {
+        color: #3b82f6;
+      }
+
+      ::ng-deep .mat-form-field-error {
+        color: #ef4444;
+        font-size: 13px;
+      }
+    }
+
+    .doctor-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 8px 0;
+
+      .doctor-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .doctor-name {
+          font-weight: 600;
+          color: #1e293b;
+          font-size: 14px;
+        }
+
+        .doctor-specialization {
+          color: #64748b;
+          font-size: 12px;
+          margin-top: 2px;
+        }
+      }
+
+      .doctor-fee {
+        font-weight: 600;
+        color: #3b82f6;
+        font-size: 14px;
+      }
+    }
+
+    .contact-method {
+      margin-bottom: 24px;
+
+      .field-label {
+        color: #64748b;
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+
+        ::ng-deep .mat-radio-button {
+          margin-right: 0;
+
+          .mat-radio-label {
+            color: #1e293b;
+            font-size: 14px;
+          }
+
+          &.mat-radio-checked .mat-radio-outer-circle {
+            border-color: #3b82f6;
+          }
+
+          &.mat-radio-checked .mat-radio-inner-circle {
+            background-color: #3b82f6;
+          }
+        }
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+
+      .cancel-btn {
+        height: 48px;
+        padding: 0 24px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        background: white;
+        color: #64748b;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #f8fafc;
+          border-color: #cbd5e1;
+          color: #475569;
+        }
+      }
+
+      .submit-btn {
+        height: 48px;
+        padding: 0 24px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        text-transform: none;
+        letter-spacing: 0.025em;
+        min-width: 160px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+          transform: translateY(-1px);
+          box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+        }
+
+        &:disabled {
+          background: #e2e8f0;
+          color: #94a3b8;
+          transform: none;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .book-appointment-container {
+    padding: 16px;
+
+    .appointment-card {
+      .appointment-form {
+        padding: 32px 24px;
+      }
+
+      .appointment-header {
+        padding: 32px 24px 24px;
+
+        mat-card-title {
+          font-size: 28px;
+        }
+      }
+    }
+
+    .form-actions {
+      flex-direction: column;
+
+      .cancel-btn,
+      .submit-btn {
+        width: 100%;
+      }
+    }
+
+    .contact-method .radio-group {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+}

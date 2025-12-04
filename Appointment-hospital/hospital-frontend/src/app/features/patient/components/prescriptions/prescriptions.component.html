@@ -1,0 +1,141 @@
+<div class="prescriptions-container">
+  <div class="prescriptions-header">
+    <h1 class="page-title">My Prescriptions</h1>
+    <p class="page-subtitle">View and manage your medical prescriptions</p>
+  </div>
+
+  <div class="prescriptions-content">
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading prescriptions...</p>
+    </div>
+
+    <!-- Prescriptions List -->
+    <div class="prescriptions-list" *ngIf="!isLoading && prescriptions.length > 0">
+      <mat-card class="prescription-card" 
+               *ngFor="let prescription of prescriptions"
+               (click)="viewPrescription(prescription)">
+        <mat-card-header>
+          <mat-card-title>{{prescription.doctorName}}</mat-card-title>
+          <mat-card-subtitle>{{prescription.date | date:'longDate'}}</mat-card-subtitle>
+          <div class="prescription-status" [class]="getStatusClass(prescription.status)">
+            {{prescription.status | titlecase}}
+          </div>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="prescription-summary">
+            <div class="diagnosis">
+              <strong>Diagnosis:</strong> {{prescription.diagnosis}}
+            </div>
+            <div class="medications-count">
+              <strong>Medications:</strong> {{prescription.medications.length}} items
+            </div>
+            <div class="medications-preview">
+              <div class="medication-item" *ngFor="let med of prescription.medications.slice(0, 2)">
+                <mat-icon>medication</mat-icon>
+                <span>{{med.name}} - {{med.dosage}}</span>
+              </div>
+              <div class="more-medications" *ngIf="prescription.medications.length > 2">
+                +{{prescription.medications.length - 2}} more
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-icon-button (click)="downloadPrescription(prescription); $event.stopPropagation()">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button mat-icon-button (click)="viewPrescription(prescription); $event.stopPropagation()">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && prescriptions.length === 0">
+      <mat-icon class="empty-icon">medication</mat-icon>
+      <h3>No Prescriptions Found</h3>
+      <p>You don't have any prescriptions yet. Your prescriptions will appear here after your appointments.</p>
+    </div>
+  </div>
+
+  <!-- Prescription Detail Modal -->
+  <div class="prescription-detail-overlay" 
+       *ngIf="selectedPrescription" 
+       (click)="closePrescription()">
+    <div class="prescription-detail-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Prescription Details</h2>
+        <button mat-icon-button (click)="closePrescription()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="modal-content" *ngIf="selectedPrescription">
+        <div class="prescription-info">
+          <div class="info-row">
+            <span class="label">Doctor:</span>
+            <span class="value">{{selectedPrescription.doctorName}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Date:</span>
+            <span class="value">{{selectedPrescription.date | date:'longDate'}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Diagnosis:</span>
+            <span class="value">{{selectedPrescription.diagnosis}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Status:</span>
+            <span class="value" [class]="getStatusClass(selectedPrescription.status)">
+              {{selectedPrescription.status | titlecase}}
+            </span>
+          </div>
+        </div>
+
+        <div class="medications-section">
+          <h3>Medications</h3>
+          <div class="medications-list">
+            <div class="medication-detail" *ngFor="let med of selectedPrescription.medications">
+              <div class="medication-header">
+                <mat-icon>medication</mat-icon>
+                <span class="medication-name">{{med.name}}</span>
+              </div>
+              <div class="medication-details">
+                <div class="detail-item">
+                  <span class="detail-label">Dosage:</span>
+                  <span class="detail-value">{{med.dosage}}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Frequency:</span>
+                  <span class="detail-value">{{med.frequency}}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Duration:</span>
+                  <span class="detail-value">{{med.duration}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="instructions-section">
+          <h3>Instructions</h3>
+          <p class="instructions-text">{{selectedPrescription.instructions}}</p>
+        </div>
+
+        <div class="modal-actions">
+          <button mat-raised-button color="primary" (click)="downloadPrescription(selectedPrescription)">
+            <mat-icon>download</mat-icon>
+            Download PDF
+          </button>
+          <button mat-button (click)="closePrescription()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

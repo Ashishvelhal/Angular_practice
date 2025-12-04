@@ -1,0 +1,177 @@
+<div class="medical-reports-container">
+  <div class="reports-header">
+    <h1 class="page-title">Medical Reports</h1>
+    <p class="page-subtitle">View and download your medical test results and reports</p>
+  </div>
+
+  <div class="reports-content">
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button mat-button 
+              class="filter-tab" 
+              [class.active]="filterType === 'all'"
+              (click)="filterReports('all')">
+        <mat-icon>list</mat-icon>
+        All Reports
+      </button>
+      <button mat-button 
+              class="filter-tab" 
+              [class.active]="filterType === 'lab'"
+              (click)="filterReports('lab')">
+        <mat-icon>science</mat-icon>
+        Lab Tests
+      </button>
+      <button mat-button 
+              class="filter-tab" 
+              [class.active]="filterType === 'imaging'"
+              (click)="filterReports('imaging')">
+        <mat-icon>image</mat-icon>
+        Imaging
+      </button>
+      <button mat-button 
+              class="filter-tab" 
+              [class.active]="filterType === 'consultation'"
+              (click)="filterReports('consultation')">
+        <mat-icon>stethoscope</mat-icon>
+        Consultations
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading medical reports...</p>
+    </div>
+
+    <!-- Reports List -->
+    <div class="reports-list" *ngIf="!isLoading && getFilteredReports().length > 0">
+      <mat-card class="report-card" 
+               *ngFor="let report of getFilteredReports()"
+               (click)="viewReport(report)">
+        <mat-card-header>
+          <div class="report-header-content">
+            <div class="report-title-section">
+              <mat-card-title>{{report.title}}</mat-card-title>
+              <mat-card-subtitle>{{report.doctorName}} - {{report.department}}</mat-card-subtitle>
+            </div>
+            <div class="report-meta">
+              <div class="report-type">
+                <mat-icon>{{getReportTypeIcon(report.reportType)}}</mat-icon>
+                <span>{{report.reportType | titlecase}}</span>
+              </div>
+              <div class="report-date">
+                <mat-icon>calendar_today</mat-icon>
+                <span>{{report.date | date:'mediumDate'}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="report-status" [class]="getStatusClass(report.status)">
+            {{report.status | titlecase}}
+          </div>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="report-summary">
+            <p>{{report.summary}}</p>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-icon-button (click)="downloadReport(report); $event.stopPropagation()">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button mat-icon-button (click)="viewReport(report); $event.stopPropagation()">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && getFilteredReports().length === 0">
+      <mat-icon class="empty-icon">folder_open</mat-icon>
+      <h3>No Reports Found</h3>
+      <p *ngIf="filterType === 'all'">
+        You don't have any medical reports yet. Your reports will appear here after your tests and appointments.
+      </p>
+      <p *ngIf="filterType !== 'all'">
+        No {{filterType}} reports found. Try selecting a different filter or check back later.
+      </p>
+    </div>
+  </div>
+
+  <!-- Report Detail Modal -->
+  <div class="report-detail-overlay" 
+       *ngIf="selectedReport" 
+       (click)="closeReport()">
+    <div class="report-detail-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Medical Report Details</h2>
+        <button mat-icon-button (click)="closeReport()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="modal-content" *ngIf="selectedReport">
+        <div class="report-info">
+          <div class="info-row">
+            <span class="label">Report Title:</span>
+            <span class="value">{{selectedReport.title}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Doctor:</span>
+            <span class="value">{{selectedReport.doctorName}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Department:</span>
+            <span class="value">{{selectedReport.department}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Date:</span>
+            <span class="value">{{selectedReport.date | date:'longDate'}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Type:</span>
+            <span class="value">
+              <mat-icon>{{getReportTypeIcon(selectedReport.reportType)}}</mat-icon>
+              {{selectedReport.reportType | titlecase}}
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="label">Status:</span>
+            <span class="value" [class]="getStatusClass(selectedReport.status)">
+              {{selectedReport.status | titlecase}}
+            </span>
+          </div>
+        </div>
+
+        <div class="summary-section">
+          <h3>Summary</h3>
+          <p class="summary-text">{{selectedReport.summary}}</p>
+        </div>
+
+        <div class="findings-section">
+          <h3>Key Findings</h3>
+          <ul class="findings-list">
+            <li *ngFor="let finding of selectedReport.findings">{{finding}}</li>
+          </ul>
+        </div>
+
+        <div class="recommendations-section">
+          <h3>Recommendations</h3>
+          <ul class="recommendations-list">
+            <li *ngFor="let recommendation of selectedReport.recommendations">{{recommendation}}</li>
+          </ul>
+        </div>
+
+        <div class="modal-actions">
+          <button mat-raised-button color="primary" (click)="downloadReport(selectedReport)">
+            <mat-icon>download</mat-icon>
+            Download PDF
+          </button>
+          <button mat-button (click)="closeReport()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

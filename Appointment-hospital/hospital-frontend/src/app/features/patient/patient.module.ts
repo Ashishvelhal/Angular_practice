@@ -7,6 +7,9 @@ import { PatientDashboardComponent } from './components/dashboard/dashboard.comp
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { BookAppointmentComponent } from './components/book-appointment/book-appointment.component';
+import { PrescriptionsComponent } from './components/prescriptions/prescriptions.component';
+import { MedicalReportsComponent } from './components/medical-reports/medical-reports.component';
+import { BillingComponent } from './components/billing/billing.component';
 
 const routes: Routes = [
   {
@@ -26,6 +29,18 @@ const routes: Routes = [
     component: BookAppointmentComponent
   },
   {
+    path: 'prescriptions',
+    component: PrescriptionsComponent
+  },
+  {
+    path: 'medical-records',
+    component: MedicalReportsComponent
+  },
+  {
+    path: 'billing',
+    component: BillingComponent
+  },
+  {
     path: 'profile',
     component: ProfileComponent
   }
@@ -36,7 +51,10 @@ const routes: Routes = [
     PatientDashboardComponent,
     AppointmentsComponent,
     ProfileComponent,
-    BookAppointmentComponent
+    BookAppointmentComponent,
+    PrescriptionsComponent,
+    MedicalReportsComponent,
+    BillingComponent
   ],
   imports: [
     CommonModule,

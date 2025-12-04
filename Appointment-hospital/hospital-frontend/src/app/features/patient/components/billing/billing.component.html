@@ -1,0 +1,249 @@
+<div class="billing-container">
+  <div class="billing-header">
+    <h1 class="page-title">Billing & Payments</h1>
+    <p class="page-subtitle">View and manage your medical bills and payments</p>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+    <mat-card class="summary-card">
+      <div class="card-content">
+        <mat-icon class="card-icon">receipt</mat-icon>
+        <div class="card-info">
+          <h3>Total Bills</h3>
+          <p class="card-value">{{getTotalBills()}}</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <div class="card-content">
+        <mat-icon class="card-icon">payments</mat-icon>
+        <div class="card-info">
+          <h3>Total Amount</h3>
+          <p class="card-value">${{formatCurrency(getTotalAmount())}}</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <div class="card-content">
+        <mat-icon class="card-icon pending">schedule</mat-icon>
+        <div class="card-info">
+          <h3>Pending</h3>
+          <p class="card-value">{{getPendingBillsCount()}}</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <div class="card-content">
+        <mat-icon class="card-icon overdue">warning</mat-icon>
+        <div class="card-info">
+          <h3>Overdue</h3>
+          <p class="card-value">{{getOverdueBillsCount()}}</p>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="billing-content">
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button mat-button 
+              class="filter-tab" 
+              [class.active]="filterStatus === 'all'"
+              (click)="filterBills('all')">
+        All Bills
+      </button>
+      <button mat-button 
+              class="filter-tab" 
+              [class.active]="filterStatus === 'pending'"
+              (click)="filterBills('pending')">
+        Pending
+      </button>
+      <button mat-button 
+              class="filter-tab" 
+              [class.active]="filterStatus === 'paid'"
+              (click)="filterBills('paid')">
+        Paid
+      </button>
+      <button mat-button 
+              class="filter-tab" 
+              [class.active]="filterStatus === 'overdue'"
+              (click)="filterBills('overdue')">
+        Overdue
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading billing information...</p>
+    </div>
+
+    <!-- Bills List -->
+    <div class="bills-list" *ngIf="!isLoading && getFilteredBills().length > 0">
+      <mat-card class="bill-card" 
+               *ngFor="let bill of getFilteredBills()"
+               (click)="viewBill(bill)">
+        <mat-card-header>
+          <div class="bill-header-content">
+            <div class="bill-info">
+              <mat-card-title>{{bill.billNumber}}</mat-card-title>
+              <mat-card-subtitle>{{bill.doctorName}} - {{bill.appointmentDate | date:'mediumDate'}}</mat-card-subtitle>
+            </div>
+            <div class="bill-amount">
+              <span class="amount">${{formatCurrency(bill.totalAmount)}}</span>
+            </div>
+          </div>
+          <div class="bill-status" [class]="getStatusClass(bill.status)">
+            {{bill.status | titlecase}}
+          </div>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="bill-summary">
+            <div class="services-preview">
+              <div class="service-item" *ngFor="let service of bill.services.slice(0, 2)">
+                <span class="service-name">{{service.name}}</span>
+                <span class="service-price">${{formatCurrency(service.totalPrice)}}</span>
+              </div>
+              <div class="more-services" *ngIf="bill.services.length > 2">
+                +{{bill.services.length - 2}} more services
+              </div>
+            </div>
+            <div class="due-info" *ngIf="bill.status === 'pending' || bill.status === 'overdue'">
+              <mat-icon>event</mat-icon>
+              <span>Due: {{bill.dueDate | date:'mediumDate'}}</span>
+            </div>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-icon-button (click)="downloadBill(bill); $event.stopPropagation()">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button mat-icon-button (click)="viewBill(bill); $event.stopPropagation()">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-raised-button 
+                  color="primary"
+                  *ngIf="bill.status === 'pending' || bill.status === 'overdue'"
+                  (click)="payBill(bill); $event.stopPropagation()">
+            Pay Now
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && getFilteredBills().length === 0">
+      <mat-icon class="empty-icon">receipt_long</mat-icon>
+      <h3>No Bills Found</h3>
+      <p *ngIf="filterStatus === 'all'">
+        You don't have any bills yet. Your bills will appear here after your appointments.
+      </p>
+      <p *ngIf="filterStatus !== 'all'">
+        No {{filterStatus}} bills found. Try selecting a different filter.
+      </p>
+    </div>
+  </div>
+
+  <!-- Bill Detail Modal -->
+  <div class="bill-detail-overlay" 
+       *ngIf="selectedBill" 
+       (click)="closeBill()">
+    <div class="bill-detail-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Bill Details</h2>
+        <button mat-icon-button (click)="closeBill()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="modal-content" *ngIf="selectedBill">
+        <div class="bill-header-info">
+          <div class="bill-number">
+            <h3>{{selectedBill.billNumber}}</h3>
+            <div class="bill-status-badge" [ngClass]="getStatusClass(selectedBill.status)">
+              {{selectedBill.status | titlecase}}
+            </div>
+          </div>
+          <div class="bill-meta">
+            <div class="meta-item">
+              <span class="label">Appointment Date:</span>
+              <span class="value">{{selectedBill.appointmentDate | date:'longDate'}}</span>
+            </div>
+            <div class="meta-item">
+              <span class="label">Doctor:</span>
+              <span class="value">{{selectedBill.doctorName}}</span>
+            </div>
+            <div class="meta-item">
+              <span class="label">Due Date:</span>
+              <span class="value">{{selectedBill.dueDate | date:'longDate'}}</span>
+            </div>
+            <div class="meta-item" *ngIf="selectedBill.paymentDate">
+              <span class="label">Payment Date:</span>
+              <span class="value">{{selectedBill.paymentDate | date:'longDate'}}</span>
+            </div>
+            <div class="meta-item" *ngIf="selectedBill.paymentMethod">
+              <span class="label">Payment Method:</span>
+              <span class="value">{{selectedBill.paymentMethod}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="services-section">
+          <h3>Services</h3>
+          <div class="services-table">
+            <div class="table-header">
+              <span>Service</span>
+              <span>Qty</span>
+              <span>Unit Price</span>
+              <span>Total</span>
+            </div>
+            <div class="table-row" *ngFor="let service of selectedBill.services">
+              <span class="service-name">{{service.name}}</span>
+              <span>{{service.quantity}}</span>
+              <span>${{formatCurrency(service.unitPrice)}}</span>
+              <span>${{formatCurrency(service.totalPrice)}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="amount-section">
+          <div class="amount-row">
+            <span>Subtotal:</span>
+            <span>${{formatCurrency(selectedBill.subtotal)}}</span>
+          </div>
+          <div class="amount-row">
+            <span>Tax:</span>
+            <span>${{formatCurrency(selectedBill.tax)}}</span>
+          </div>
+          <div class="amount-row total">
+            <span>Total Amount:</span>
+            <span>${{formatCurrency(selectedBill.totalAmount)}}</span>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button mat-raised-button 
+                  color="primary" 
+                  *ngIf="selectedBill.status === 'pending' || selectedBill.status === 'overdue'"
+                  (click)="payBill(selectedBill)">
+            <mat-icon>payment</mat-icon>
+            Pay Now
+          </button>
+          <button mat-raised-button 
+                  color="accent" 
+                  (click)="downloadBill(selectedBill)">
+            <mat-icon>download</mat-icon>
+            Download PDF
+          </button>
+          <button mat-button (click)="closeBill()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
