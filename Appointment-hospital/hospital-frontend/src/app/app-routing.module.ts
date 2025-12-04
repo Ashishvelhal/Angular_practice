@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
+import { MainLayoutComponent } from './shared/components/main-layout/main-layout.component';
 
 const routes: Routes = [
   {
@@ -14,22 +15,29 @@ const routes: Routes = [
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    path: 'patient',
-    loadChildren: () => import('./features/patient/patient.module').then(m => m.PatientModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['patient'] }
-  },
-  {
-    path: 'doctor',
-    loadChildren: () => import('./features/doctor/doctor.module').then(m => m.DoctorModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['doctor'] }
-  },
-  {
-    path: 'admin',
-    loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['admin'] }
+    path: '',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'patient',
+        loadChildren: () => import('./features/patient/patient.module').then(m => m.PatientModule),
+        canActivate: [RoleGuard],
+        data: { roles: ['patient'] }
+      },
+      {
+        path: 'doctor',
+        loadChildren: () => import('./features/doctor/doctor.module').then(m => m.DoctorModule),
+        canActivate: [RoleGuard],
+        data: { roles: ['doctor'] }
+      },
+      {
+        path: 'admin',
+        loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule),
+        canActivate: [RoleGuard],
+        data: { roles: ['admin'] }
+      }
+    ]
   },
   {
     path: '**',

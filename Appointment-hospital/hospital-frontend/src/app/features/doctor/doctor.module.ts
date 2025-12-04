@@ -3,30 +3,64 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DoctorDashboardComponent } from './components/dashboard/dashboard.component';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PatientListComponent } from './components/patient-list/patient-list.component';
+import { MedicalRecordsComponent } from './components/medical-records/medical-records.component';
+import { BillingComponent } from './components/billing/billing.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent,
-    children: [
-      { path: '', redirectTo: 'appointments', pathMatch: 'full' },
-      { path: 'appointments', component: AppointmentsComponent },
-      { path: 'patients', component: PatientListComponent },
-      { path: 'profile', component: ProfileComponent }
-    ]
+    component: DoctorDashboardComponent
+  },
+  {
+    path: 'dashboard',
+    component: DoctorDashboardComponent
+  },
+  {
+    path: 'appointments',
+    component: AppointmentsComponent
+  },
+  {
+    path: 'patients',
+    component: PatientListComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
+  },
+  {
+    path: 'medical-records',
+    component: MedicalRecordsComponent
+  },
+  {
+    path: 'billing',
+    component: BillingComponent
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent
   }
 ];
 
 @NgModule({
   declarations: [
-    DashboardComponent,
+    DoctorDashboardComponent,
     AppointmentsComponent,
     ProfileComponent,
-    PatientListComponent
+    PatientListComponent,
+    MedicalRecordsComponent,
+    BillingComponent,
+    ReportsComponent,
+    SettingsComponent
   ],
   imports: [
     CommonModule,

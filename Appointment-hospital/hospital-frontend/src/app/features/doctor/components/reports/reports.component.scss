@@ -1,0 +1,79 @@
+.reports {
+  padding: 24px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+  
+  h1 {
+    color: #1976d2;
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+.report-filters {
+  margin-bottom: 32px;
+  
+  .filter-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    
+    .filter-field {
+      flex: 1;
+    }
+  }
+}
+
+.report-cards {
+  margin-bottom: 32px;
+  
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    
+    .report-card {
+      .report-stats {
+        display: flex;
+        justify-content: space-between;
+        margin: 16px 0;
+        
+        .stat-item {
+          text-align: center;
+          
+          .stat-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 4px;
+          }
+          
+          .stat-label {
+            color: #666;
+            font-size: 0.875rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.recent-reports {
+  table {
+    width: 100%;
+  }
+  
+  mat-header-cell {
+    font-weight: 600;
+    color: #1976d2;
+  }
+}

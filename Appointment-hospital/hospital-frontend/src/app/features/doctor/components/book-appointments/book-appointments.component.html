@@ -1,0 +1,86 @@
+<div class="book-appointments">
+  <div class="page-header">
+    <h1>Book Appointments</h1>
+    <p>Schedule new appointments for patients</p>
+  </div>
+
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>New Appointment</mat-card-title>
+      <mat-card-subtitle>Fill in the appointment details</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="appointment-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Patient Name</mat-label>
+            <input matInput placeholder="Enter patient name">
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Patient Email</mat-label>
+            <input matInput placeholder="Enter patient email">
+            <mat-icon matSuffix>email</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Appointment Date</mat-label>
+            <input matInput [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Time</mat-label>
+            <mat-select>
+              <mat-option value="09:00">09:00 AM</mat-option>
+              <mat-option value="10:00">10:00 AM</mat-option>
+              <mat-option value="11:00">11:00 AM</mat-option>
+              <mat-option value="14:00">02:00 PM</mat-option>
+              <mat-option value="15:00">03:00 PM</mat-option>
+              <mat-option value="16:00">04:00 PM</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Appointment Type</mat-label>
+            <mat-select>
+              <mat-option value="consultation">Consultation</mat-option>
+              <mat-option value="followup">Follow-up</mat-option>
+              <mat-option value="checkup">General Checkup</mat-option>
+              <mat-option value="emergency">Emergency</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Duration</mat-label>
+            <mat-select>
+              <mat-option value="30">30 minutes</mat-option>
+              <mat-option value="45">45 minutes</mat-option>
+              <mat-option value="60">1 hour</mat-option>
+              <mat-option value="90">1.5 hours</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Notes</mat-label>
+            <textarea matInput placeholder="Additional notes about the appointment" rows="4"></textarea>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button>Cancel</button>
+      <button mat-raised-button color="primary">Book Appointment</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

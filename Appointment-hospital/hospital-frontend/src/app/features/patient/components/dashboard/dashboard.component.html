@@ -1,7 +1,7 @@
 <div class="patient-dashboard">
   <div class="dashboard-header">
     <h1>Patient Dashboard</h1>
-    <p>Welcome back! Here's an overview of your appointments and health data.</p>
+    <p>Welcome back, {{patientName}}! Here's an overview of your appointments and health data.</p>
   </div>
 
   <div class="dashboard-content">
@@ -15,23 +15,66 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #appointmentMenu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="bookAppointment()">
               <mat-icon>add</mat-icon>
               <span>New Appointment</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="viewAllAppointments()">
               <mat-icon>list</mat-icon>
               <span>View All</span>
             </button>
           </mat-menu>
         </mat-card-header>
         <mat-card-content>
-          <div class="empty-state" *ngIf="true">
+          <div class="empty-state" *ngIf="upcomingAppointments.length === 0">
             <mat-icon>event_available</mat-icon>
             <p>No upcoming appointments</p>
-            <button mat-raised-button color="primary" routerLink="/patient/appointments">
+            <button mat-raised-button color="primary" (click)="bookAppointment()">
               Book an Appointment
             </button>
+          </div>
+          <div class="appointments-list" *ngIf="upcomingAppointments.length > 0">
+            <div class="appointment-item" *ngFor="let appointment of upcomingAppointments" (click)="viewAppointmentDetails(appointment.id)">
+              <div class="appointment-date">
+                <div class="date">{{appointment.date | date:'shortDate'}}</div>
+                <div class="time">{{appointment.time}}</div>
+              </div>
+              <div class="appointment-details">
+                <div class="doctor-name">{{appointment.doctorName}}</div>
+                <div class="specialization">{{appointment.specialization}}</div>
+              </div>
+              <mat-icon class="appointment-status" [ngClass]="appointment.status">
+                {{appointment.status === 'scheduled' ? 'event' : 'check_circle'}}
+              </mat-icon>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Statistics -->
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Your Health Overview</mat-card-title>
+          <mat-card-subtitle>Quick statistics</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number">{{totalAppointments}}</div>
+              <div class="stat-label">Total Appointments</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{completedAppointments}}</div>
+              <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{upcomingAppointments.length}}</div>
+              <div class="stat-label">Upcoming</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{pendingPrescriptions}}</div>
+              <div class="stat-label">Pending Prescriptions</div>
+            </div>
           </div>
         </mat-card-content>
       </mat-card>
@@ -44,19 +87,19 @@
         </mat-card-header>
         <mat-card-content>
           <div class="quick-actions">
-            <button mat-button class="action-button" routerLink="/patient/appointments/book">
+            <button mat-button class="action-button" (click)="bookAppointment()">
               <mat-icon>add_circle</mat-icon>
               <span>Book Appointment</span>
             </button>
-            <button mat-button class="action-button" routerLink="/patient/prescriptions">
+            <button mat-button class="action-button" (click)="viewPrescriptions()">
               <mat-icon>medication</mat-icon>
               <span>My Prescriptions</span>
             </button>
-            <button mat-button class="action-button" routerLink="/patient/medical-records">
+            <button mat-button class="action-button" (click)="viewMedicalRecords()">
               <mat-icon>medical_services</mat-icon>
               <span>Medical Records</span>
             </button>
-            <button mat-button class="action-button" routerLink="/patient/billing">
+            <button mat-button class="action-button" (click)="viewBilling()">
               <mat-icon>receipt</mat-icon>
               <span>Billing</span>
             </button>
@@ -72,9 +115,18 @@
         <mat-card-subtitle>Your latest interactions</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <div class="empty-state">
+        <div class="empty-state" *ngIf="recentActivities.length === 0">
           <mat-icon>history</mat-icon>
           <p>No recent activity</p>
+        </div>
+        <div class="activity-list" *ngIf="recentActivities.length > 0">
+          <div class="activity-item" *ngFor="let activity of recentActivities">
+            <mat-icon>{{activity.icon}}</mat-icon>
+            <div class="activity-details">
+              <div class="activity-text">{{activity.text}}</div>
+              <div class="activity-time">{{activity.time}}</div>
+            </div>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>

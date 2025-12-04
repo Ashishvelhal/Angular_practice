@@ -1,0 +1,46 @@
+.book-appointments {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 32px;
+  
+  h1 {
+    color: #1976d2;
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+.form-card {
+  margin-bottom: 24px;
+}
+
+.appointment-form {
+  .form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    
+    .full-width {
+      flex: 1;
+    }
+    
+    .half-width {
+      flex: 1;
+    }
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+}

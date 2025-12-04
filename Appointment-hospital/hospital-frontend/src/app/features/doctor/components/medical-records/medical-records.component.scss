@@ -1,0 +1,57 @@
+.medical-records {
+  padding: 24px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+  
+  h1 {
+    color: #1976d2;
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+.search-section {
+  margin-bottom: 24px;
+  
+  .search-bar {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    
+    .search-field {
+      flex: 1;
+    }
+  }
+}
+
+.records-table {
+  .patient-info {
+    .patient-name {
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .patient-id {
+      font-size: 0.875rem;
+      color: #666;
+    }
+  }
+}
+
+table {
+  width: 100%;
+}
+
+mat-header-cell {
+  font-weight: 600;
+  color: #1976d2;
+}

@@ -10,24 +10,54 @@ const Doctor = sequelize.define('Doctor', {
   },
   specialization: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      len: [2, 100]
+    }
   },
   licenseNumber: {
     type: DataTypes.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      len: [5, 50]
+    }
   },
   experienceYears: {
     type: DataTypes.INTEGER,
-    defaultValue: 0
+    defaultValue: 0,
+    validate: {
+      min: 0,
+      max: 70
+    }
   },
   consultationFee: {
     type: DataTypes.DECIMAL(10, 2),
-    allowNull: false
+    allowNull: false,
+    validate: {
+      min: 0
+    }
   },
   bio: {
     type: DataTypes.TEXT,
-    allowNull: true
+    allowNull: true,
+    validate: {
+      len: [0, 2000]
+    }
+  },
+  qualifications: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    validate: {
+      len: [0, 1000]
+    }
+  },
+  availability: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: {}
   },
   userId: {
     type: DataTypes.INTEGER,
@@ -40,7 +70,19 @@ const Doctor = sequelize.define('Doctor', {
   }
 }, {
   timestamps: true,
-  tableName: 'doctors'
+  tableName: 'doctors',
+  indexes: [
+    {
+      unique: true,
+      fields: ['licenseNumber']
+    },
+    {
+      fields: ['specialization']
+    },
+    {
+      fields: ['userId']
+    }
+  ]
 });
 
 // Define associations

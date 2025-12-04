@@ -60,7 +60,7 @@ export class AuthService {
   logout(): void {
     this.removeTokens();
     this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   refreshToken(): Observable<{ token: string }> {

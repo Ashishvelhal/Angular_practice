@@ -1,0 +1,117 @@
+<div class="appointments">
+  <div class="page-header">
+    <h1>Today's Appointments</h1>
+    <p>Manage your scheduled appointments for today</p>
+  </div>
+
+  <div class="appointments-stats">
+    <div class="stat-cards">
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-icon">
+            <mat-icon>event</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{todayAppointments.length}}</div>
+            <div class="stat-label">Today's Appointments</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-icon">
+            <mat-icon>schedule</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{getUpcomingCount()}}</div>
+            <div class="stat-label">Upcoming</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-icon">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{getCompletedCount()}}</div>
+            <div class="stat-label">Completed</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="appointments-list">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Today's Schedule</mat-card-title>
+        <mat-card-subtitle>{{currentDate}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="todayAppointments">
+          <!-- Time Column -->
+          <ng-container matColumnDef="time">
+            <th mat-header-cell *matHeaderCellDef>Time</th>
+            <td mat-cell *matCellDef="let appointment">
+              <div class="time-slot">
+                <div class="time">{{appointment.time}}</div>
+                <div class="duration">{{appointment.duration}} min</div>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Patient Column -->
+          <ng-container matColumnDef="patient">
+            <th mat-header-cell *matHeaderCellDef>Patient</th>
+            <td mat-cell *matCellDef="let appointment">
+              <div class="patient-info">
+                <div class="patient-name">{{appointment.patientName}}</div>
+                <div class="patient-id">ID: {{appointment.patientId}}</div>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Type Column -->
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let appointment">
+              <span class="appointment-type">{{appointment.type}}</span>
+            </td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let appointment">
+              <span class="status-badge" [class]="getStatusClass(appointment.status)">
+                {{appointment.status}}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let appointment">
+              <button mat-icon-button color="primary" matTooltip="View Details">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" matTooltip="Medical Records">
+                <mat-icon>folder</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" matTooltip="Cancel" *ngIf="appointment.status === 'Scheduled'">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

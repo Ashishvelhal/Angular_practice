@@ -47,8 +47,13 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('Register form initialized:', this.registerForm.value);
+    console.log('Role control value:', this.registerForm.get('role')?.value);
+    console.log('Role control status:', this.registerForm.get('role')?.status);
+    
     // Update validators based on role
     this.registerForm.get('role')?.valueChanges.subscribe(role => {
+      console.log('Role changed to:', role);
       this.updateValidators(role);
     });
   }
@@ -76,7 +81,10 @@ export class RegisterComponent implements OnInit {
   passwordMatchValidator(g: FormGroup): { [key: string]: boolean } | null {
     const password = g.get('password')?.value;
     const confirmPassword = g.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
+    if (password && confirmPassword) {
+      return password === confirmPassword ? null : { mismatch: true };
+    }
+    return null;
   }
 
   onSubmit(): void {

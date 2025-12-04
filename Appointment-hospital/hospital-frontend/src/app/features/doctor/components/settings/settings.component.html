@@ -1,0 +1,165 @@
+<div class="settings">
+  <div class="page-header">
+    <h1>Settings</h1>
+    <p>Manage your account and application settings</p>
+  </div>
+
+  <div class="settings-container">
+    <div class="settings-sidebar">
+      <mat-nav-list>
+        <a mat-list-item class="active" href="#profile">
+          <mat-icon>person</mat-icon>
+          <span>Profile Settings</span>
+        </a>
+        <a mat-list-item href="#notifications">
+          <mat-icon>notifications</mat-icon>
+          <span>Notifications</span>
+        </a>
+        <a mat-list-item href="#security">
+          <mat-icon>security</mat-icon>
+          <span>Security</span>
+        </a>
+        <a mat-list-item href="#preferences">
+          <mat-icon>settings</mat-icon>
+          <span>Preferences</span>
+        </a>
+      </mat-nav-list>
+    </div>
+
+    <div class="settings-content">
+      <!-- Profile Settings -->
+      <mat-card id="profile" class="setting-section">
+        <mat-card-header>
+          <mat-card-title>Profile Settings</mat-card-title>
+          <mat-card-subtitle>Update your personal information</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <form class="settings-form">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>First Name</mat-label>
+                <input matInput value="John">
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Last Name</mat-label>
+                <input matInput value="Doe">
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput value="john.doe@hospital.com">
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Phone</mat-label>
+                <input matInput value="+1 (555) 123-4567">
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Bio</mat-label>
+                <textarea matInput rows="4">Experienced doctor specializing in internal medicine.</textarea>
+              </mat-form-field>
+            </div>
+          </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button>Cancel</button>
+          <button mat-raised-button color="primary">Save Changes</button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!-- Notification Settings -->
+      <mat-card id="notifications" class="setting-section">
+        <mat-card-header>
+          <mat-card-title>Notification Settings</mat-card-title>
+          <mat-card-subtitle>Manage your notification preferences</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="notification-settings">
+            <div class="setting-item">
+              <div class="setting-info">
+                <div class="setting-title">Email Notifications</div>
+                <div class="setting-description">Receive email updates about appointments</div>
+              </div>
+              <mat-slide-toggle></mat-slide-toggle>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <div class="setting-title">SMS Notifications</div>
+                <div class="setting-description">Receive text messages for urgent updates</div>
+              </div>
+              <mat-slide-toggle></mat-slide-toggle>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <div class="setting-title">Push Notifications</div>
+                <div class="setting-description">Receive browser push notifications</div>
+              </div>
+              <mat-slide-toggle checked></mat-slide-toggle>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Security Settings -->
+      <mat-card id="security" class="setting-section">
+        <mat-card-header>
+          <mat-card-title>Security Settings</mat-card-title>
+          <mat-card-subtitle>Manage your security preferences</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="security-settings">
+            <div class="setting-item">
+              <div class="setting-info">
+                <div class="setting-title">Two-Factor Authentication</div>
+                <div class="setting-description">Add an extra layer of security to your account</div>
+              </div>
+              <mat-slide-toggle></mat-slide-toggle>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <div class="setting-title">Session Timeout</div>
+                <div class="setting-description">Automatically log out after inactivity</div>
+              </div>
+              <mat-select>
+                <mat-option value="30">30 minutes</mat-option>
+                <mat-option value="60">1 hour</mat-option>
+                <mat-option value="120">2 hours</mat-option>
+              </mat-select>
+            </div>
+
+            <div class="password-section">
+              <h3>Change Password</h3>
+              <form class="password-form">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Current Password</mat-label>
+                  <input matInput type="password">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>New Password</mat-label>
+                  <input matInput type="password">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Confirm New Password</mat-label>
+                  <input matInput type="password">
+                </mat-form-field>
+              </form>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary">Update Password</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -5,7 +5,13 @@ import { Component } from '@angular/core';
   template: `
     <router-outlet></router-outlet>
   `,
-  styles: []
+  styles: [`
+    :host {
+      display: block;
+      height: 100vh;
+      overflow: hidden;
+    }
+  `]
 })
 export class AppComponent {
   title = 'hospital-frontend';

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { sequelize } = require('./config/database');
+const { sequelize, sequelizeWithoutDB } = require('./config/database');
 const authRoutes = require('./routes/auth.routes');
 const appointmentRoutes = require('./routes/appointment.routes');
 const doctorRoutes = require('./routes/doctor.routes');
@@ -32,9 +32,18 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
-// Sync database and start server
+// Create database and start server
 const startServer = async () => {
   try {
+    // First connect without database to create it
+    await sequelizeWithoutDB.authenticate();
+    console.log('MySQL connection established successfully.');
+    
+    // Create database if it doesn't exist
+    await sequelizeWithoutDB.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME || 'hospital_appointment'}\`;`);
+    console.log('Database created or already exists.');
+    
+    // Now connect with the database
     await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
     

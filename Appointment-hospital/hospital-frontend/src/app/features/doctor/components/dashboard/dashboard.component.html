@@ -1,0 +1,232 @@
+<div class="doctor-dashboard">
+  <div class="dashboard-header">
+    <h1>Doctor Dashboard</h1>
+    <p>Welcome back, Dr. {{doctorName}}! Here's your practice overview.</p>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="dashboard-cards">
+      <!-- Today's Schedule -->
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Today's Schedule</mat-card-title>
+          <mat-card-subtitle>{{currentDate}}</mat-card-subtitle>
+          <button mat-icon-button [matMenuTriggerFor]="scheduleMenu" class="menu-button">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #scheduleMenu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>calendar_today</mat-icon>
+              <span>Full Calendar</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>settings</mat-icon>
+              <span>Manage Schedule</span>
+            </button>
+          </mat-menu>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="empty-state" *ngIf="todayAppointments.length === 0">
+            <mat-icon>event_available</mat-icon>
+            <p>No appointments today</p>
+            <button mat-raised-button color="primary" routerLink="/doctor/appointments">
+              View All Appointments
+            </button>
+          </div>
+          <div class="appointments-list" *ngIf="todayAppointments.length > 0">
+            <div class="appointment-item" *ngFor="let appointment of todayAppointments">
+              <div class="appointment-time">{{appointment.time}}</div>
+              <div class="appointment-details">
+                <div class="patient-name">{{appointment.patientName}}</div>
+                <div class="appointment-type">{{appointment.type}}</div>
+              </div>
+              <button mat-icon-button>
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Patient Statistics -->
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Patient Statistics</mat-card-title>
+          <mat-card-subtitle>This month overview</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number">{{totalPatients}}</div>
+              <div class="stat-label">Total Patients</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{newPatients}}</div>
+              <div class="stat-label">New Patients</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{completedAppointments}}</div>
+              <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{upcomingAppointments}}</div>
+              <div class="stat-label">Upcoming</div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Quick Actions -->
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Quick Actions</mat-card-title>
+          <mat-card-subtitle>Common tasks</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="quick-actions">
+            <button mat-button class="action-button" routerLink="/doctor/appointments">
+              <mat-icon>calendar_today</mat-icon>
+              <span>Appointments</span>
+            </button>
+            <button mat-button class="action-button" routerLink="/doctor/patients">
+              <mat-icon>people</mat-icon>
+              <span>Patients</span>
+            </button>
+            <button mat-button class="action-button" routerLink="/doctor/prescriptions">
+              <mat-icon>medication</mat-icon>
+              <span>Prescriptions</span>
+            </button>
+            <button mat-button class="action-button" routerLink="/doctor/profile">
+              <mat-icon>person</mat-icon>
+              <span>Profile</span>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Recent Activity -->
+    <mat-card class="recent-activity">
+      <mat-card-header>
+        <mat-card-title>Recent Activity</mat-card-title>
+        <mat-card-subtitle>Your latest interactions</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="empty-state" *ngIf="recentActivities.length === 0">
+          <mat-icon>history</mat-icon>
+          <p>No recent activity</p>
+        </div>
+        <div class="activity-list" *ngIf="recentActivities.length > 0">
+          <div class="activity-item" *ngFor="let activity of recentActivities">
+            <mat-icon>{{activity.icon}}</mat-icon>
+            <div class="activity-details">
+              <div class="activity-text">{{activity.text}}</div>
+              <div class="activity-time">{{activity.time}}</div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Additional Content for Scrolling -->
+    <mat-card class="additional-content">
+      <mat-card-header>
+        <mat-card-title>Medical Updates</mat-card-title>
+        <mat-card-subtitle>Latest medical news and updates</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="news-list">
+          <div class="news-item">
+            <h3>New Treatment Guidelines Released</h3>
+            <p>Updated protocols for diabetes management now available...</p>
+            <small>2 hours ago</small>
+          </div>
+          <div class="news-item">
+            <h3>System Maintenance Scheduled</h3>
+            <p>Medical records system will be updated this weekend...</p>
+            <small>5 hours ago</small>
+          </div>
+          <div class="news-item">
+            <h3>New Medical Equipment Arrived</h3>
+            <p>Latest diagnostic machines now available in the hospital...</p>
+            <small>1 day ago</small>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Patient Reviews -->
+    <mat-card class="patient-reviews">
+      <mat-card-header>
+        <mat-card-title>Patient Feedback</mat-card-title>
+        <mat-card-subtitle>Recent patient reviews and ratings</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="reviews-list">
+          <div class="review-item">
+            <div class="review-header">
+              <span class="patient-name">John Smith</span>
+              <div class="rating">
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+                <mat-icon>star_border</mat-icon>
+              </div>
+            </div>
+            <p class="review-text">Excellent care and professional service. Very satisfied with the treatment.</p>
+            <small>2 days ago</small>
+          </div>
+          <div class="review-item">
+            <div class="review-header">
+              <span class="patient-name">Sarah Johnson</span>
+              <div class="rating">
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+              </div>
+            </div>
+            <p class="review-text">Dr. was very thorough and explained everything clearly. Highly recommend!</p>
+            <small>3 days ago</small>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Upcoming Events -->
+    <mat-card class="upcoming-events">
+      <mat-card-header>
+        <mat-card-title>Upcoming Events</mat-card-title>
+        <mat-card-subtitle>Medical conferences and events</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="events-list">
+          <div class="event-item">
+            <div class="event-date">
+              <div class="date">15</div>
+              <div class="month">DEC</div>
+            </div>
+            <div class="event-details">
+              <h4>Medical Conference 2024</h4>
+              <p>Annual medical conference at the convention center</p>
+              <small>9:00 AM - 5:00 PM</small>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-date">
+              <div class="date">22</div>
+              <div class="month">DEC</div>
+            </div>
+            <div class="event-details">
+              <h4>Staff Training Session</h4>
+              <p>Mandatory training for all medical staff</p>
+              <small>2:00 PM - 4:00 PM</small>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

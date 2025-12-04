@@ -1,0 +1,107 @@
+.billing {
+  padding: 24px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+  
+  h1 {
+    color: #1976d2;
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+.billing-stats {
+  margin-bottom: 32px;
+  
+  .stat-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    
+    .stat-card {
+      mat-card-content {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        
+        .stat-icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background: #e3f2fd;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          mat-icon {
+            color: #1976d2;
+            font-size: 24px;
+          }
+        }
+        
+        .stat-content {
+          .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+          }
+          
+          .stat-label {
+            color: #666;
+            font-size: 0.875rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.billing-table {
+  .patient-info {
+    .patient-name {
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .patient-id {
+      font-size: 0.875rem;
+      color: #666;
+    }
+  }
+  
+  .status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    
+    &.paid {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+    
+    &.pending {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+  }
+}
+
+table {
+  width: 100%;
+}
+
+mat-header-cell {
+  font-weight: 600;
+  color: #1976d2;
+}

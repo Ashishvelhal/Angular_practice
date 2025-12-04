@@ -1,0 +1,21 @@
+<header class="navbar">
+  <div class="navbar-left">
+    <button mat-icon-button class="menu-toggle" (click)="toggleSidebar.emit()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="page-title">{{pageTitle}}</h1>
+  </div>
+
+  <div class="navbar-right">
+    <!-- Profile button for doctors -->
+    <ng-container *ngIf="currentUser$ | async as user">
+      <button mat-icon-button 
+              *ngIf="user?.role === 'doctor'" 
+              (click)="navigateToProfile()" 
+              class="profile-btn"
+              matTooltip="Profile">
+        <mat-icon>person</mat-icon>
+      </button>
+    </ng-container>
+  </div>
+</header>

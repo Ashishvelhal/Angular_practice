@@ -1,7 +1,7 @@
-// src/app/shared/shared.module.ts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 // Material Modules
 import { MatButtonModule } from '@angular/material/button';
@@ -23,6 +23,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatOptionModule } from '@angular/material/core';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
+// Components
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { MainLayoutComponent } from './components/main-layout/main-layout.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { SidebarNavComponent } from './components/sidebar-nav/sidebar-nav.component';
 
 const materialModules = [
   MatButtonModule,
@@ -43,22 +52,36 @@ const materialModules = [
   MatMenuModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule
+  MatSortModule,
+  MatDividerModule,
+  MatTooltipModule,
+  MatSlideToggleModule
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    SidebarComponent,
+    MainLayoutComponent,
+    NavbarComponent,
+    SidebarNavComponent
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    RouterModule,
     ...materialModules
   ],
   exports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    ...materialModules
+    RouterModule,
+    ...materialModules,
+    SidebarComponent,
+    MainLayoutComponent,
+    NavbarComponent,
+    SidebarNavComponent
   ]
 })
 export class SharedModule { }
